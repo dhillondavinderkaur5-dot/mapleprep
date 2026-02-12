@@ -187,3 +187,170 @@ export const ResourcesPage: React.FC = () => {
     </div>
   );
 };
+<<<<<<< HEAD
+=======
+
+interface PricingPageProps {
+  onGetStarted: () => void;
+}
+
+export const PricingPage: React.FC<PricingPageProps> = ({ onGetStarted }) => {
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [promoMessage, setPromoMessage] = useState('');
+  const [promoStatus, setPromoStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const basePrice = billingCycle === 'monthly' ? 89 : 890;
+  const finalPrice = basePrice - discount;
+
+  const applyPromo = () => {
+    const code = promoCode.trim().toUpperCase();
+    if (code === 'TEACH20') {
+      setDiscount(20);
+      setPromoMessage('Coupon applied! $20.00 off.');
+      setPromoStatus('success');
+    } else if (code === 'MAPLE10') {
+      setDiscount(10);
+      setPromoMessage('Coupon applied! $10.00 off.');
+      setPromoStatus('success');
+    } else {
+      setDiscount(0);
+      setPromoMessage('Invalid promo code.');
+      setPromoStatus('error');
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 animate-fadeIn">
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-extrabold text-slate-900 mb-4">Pricing Simplified</h2>
+        <p className="text-xl text-slate-600 mb-8">One powerful plan. Unlimited possibilities for your school.</p>
+        
+        {/* Monthly/Yearly Toggle */}
+        <div className="inline-flex bg-slate-200 p-1 rounded-full">
+          <button 
+            onClick={() => { setBillingCycle('monthly'); setDiscount(0); setPromoCode(''); setPromoStatus('idle'); }}
+            className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${billingCycle === 'monthly' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+          >
+            Monthly
+          </button>
+          <button 
+            onClick={() => { setBillingCycle('yearly'); setDiscount(0); setPromoCode(''); setPromoStatus('idle'); }}
+            className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${billingCycle === 'yearly' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+          >
+            Yearly <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Save 17%</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="max-w-xl mx-auto">
+        {/* Card Container */}
+        <div className="bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800 relative">
+          {/* Top Banner */}
+          <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-3 text-center">
+            <span className="text-slate-900 font-extrabold text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+              <Crown className="w-4 h-4 fill-current" /> Most Popular Choice
+            </span>
+          </div>
+
+          <div className="p-10 text-white">
+            <h3 className="text-3xl font-bold mb-2 flex items-center justify-center gap-3">
+              MaplePrep <span className="text-yellow-400 font-serif italic">Elite</span>
+            </h3>
+            <p className="text-slate-400 text-center mb-8">The ultimate all-in-one suite for modern educators.</p>
+
+            {/* Price Display */}
+            <div className="text-center mb-8 bg-white/5 rounded-2xl p-6 border border-white/10 transition-all">
+              <div className="flex items-center justify-center items-baseline gap-1">
+                <span className="text-6xl font-extrabold text-white">${finalPrice}</span>
+                <span className="text-xl text-slate-400 font-medium">/{billingCycle === 'monthly' ? 'mo' : 'yr'}</span>
+              </div>
+              {billingCycle === 'yearly' && (
+                 <div className="text-sm text-green-400 font-bold mt-2">Billed annually (${(finalPrice / 12).toFixed(0)}/mo equivalent)</div>
+              )}
+              {discount > 0 && (
+                <div className="mt-2 text-sm text-green-400 font-bold animate-pulse">
+                  Original Price: <span className="line-through text-slate-500">${basePrice}</span> (You save ${discount})
+                </div>
+              )}
+            </div>
+
+            {/* Features List */}
+            <ul className="space-y-4 mb-10">
+              <li className="flex items-start gap-3">
+                <div className="bg-green-500/20 p-1 rounded-full"><Check className="w-4 h-4 text-green-400" /></div>
+                <span className="text-slate-300"><strong className="text-white">Unlimited</strong> AI Lesson Generation</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="bg-green-500/20 p-1 rounded-full"><Check className="w-4 h-4 text-green-400" /></div>
+                <span className="text-slate-300">Complete <strong className="text-white">Worksheet & Quiz</strong> Studio</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="bg-green-500/20 p-1 rounded-full"><Check className="w-4 h-4 text-green-400" /></div>
+                <span className="text-slate-300">Interactive <strong className="text-white">Smart Board</strong> & Games</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="bg-green-500/20 p-1 rounded-full"><Check className="w-4 h-4 text-green-400" /></div>
+                <span className="text-slate-300">School Admin Dashboard & <strong className="text-white">Reporting</strong></span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="bg-green-500/20 p-1 rounded-full"><Check className="w-4 h-4 text-green-400" /></div>
+                <span className="text-slate-300">Priority <strong className="text-white">24/7 Support</strong></span>
+              </li>
+            </ul>
+
+            {/* Promo Code Section */}
+            <div className="mb-8">
+               <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Have a Promo Code?</label>
+               <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <input 
+                      type="text" 
+                      placeholder="Enter code" 
+                      value={promoCode}
+                      onChange={(e) => { setPromoCode(e.target.value); setPromoStatus('idle'); }}
+                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-mono uppercase"
+                    />
+                  </div>
+                  <button 
+                    onClick={applyPromo}
+                    className="bg-slate-700 hover:bg-slate-600 text-white px-4 rounded-lg text-sm font-bold transition-colors"
+                  >
+                    Apply
+                  </button>
+               </div>
+               {promoStatus !== 'idle' && (
+                 <p className={`text-xs mt-2 font-bold ${promoStatus === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                   {promoMessage}
+                 </p>
+               )}
+            </div>
+
+            <div className="space-y-4">
+              <Button 
+                onClick={onGetStarted} 
+                className="w-full py-4 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-slate-900 font-extrabold text-lg shadow-xl shadow-yellow-900/20 border-none"
+              >
+                Get Started Now <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              
+              <button 
+                onClick={onGetStarted}
+                className="w-full text-slate-400 hover:text-white text-sm font-bold flex items-center justify-center gap-2 group transition-colors"
+              >
+                <Clock className="w-4 h-4 group-hover:text-yellow-400 transition-colors" /> Start 2-Day Free Trial
+              </button>
+            </div>
+            
+            <p className="text-center text-xs text-slate-500 mt-6">
+              Cancel anytime. Secure payment processing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+>>>>>>> c69ff7959d130581df48d7160275444f9cabdc03

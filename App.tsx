@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { PresentationForm } from './components/PresentationForm';
 import { PresentationView } from './components/PresentationView';
@@ -24,6 +25,19 @@ const getUUID = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
+
+import React, { useState, useEffect } from 'react';
+import { PresentationForm } from './components/PresentationForm';
+import { PresentationView } from './components/PresentationView';
+import { FeaturesPage, ResourcesPage, PricingPage } from './components/StaticPages';
+import { LoginPage } from './components/LoginPage';
+import { SchoolDashboard } from './components/SchoolDashboard';
+import { TeacherDashboard } from './components/TeacherDashboard';
+import { generateLessonPlan } from './services/geminiService';
+import { GenerationParams, LessonPlan, TeacherProfile, UserProfile, UserType, SubscriptionDetails } from './types';
+import { LogOut, ChevronDown, User as UserIcon, Building2, Menu, X, ArrowRight, ShieldCheck, CreditCard, Lock, Calendar, Clock } from 'lucide-react';
+import { Button } from './components/Button';
+
 const MapleLeafIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
     <path d="M11.66 0.77C11.66 0.77 12.8 4.2 13.06 6.09C13.27 7.58 14.16 8.32 15.35 7.65L18.4 5.95L17.86 9.65C17.7 10.8 18.4 11.95 19.48 12.31L22.58 13.35L19.12 15.28C17.91 15.95 17.43 17.38 18.04 18.48L19.78 21.63L16.29 20.46C15.07 20.05 13.76 20.66 13.36 21.82L12.8 23.5L11.72 20.32C11.31 19.16 10 18.55 8.79 18.96L5.3 20.13L7.04 16.98C7.65 15.88 7.17 14.45 5.96 13.78L2.5 11.85L5.6 10.81C6.68 10.45 7.38 9.3 7.22 8.15L6.68 4.45L9.73 6.15C10.92 6.82 11.81 6.08 12.03 4.59L12.29 0.77H11.66Z" />
@@ -40,6 +54,7 @@ type View = 'landing' | 'login' | 'features' | 'resources' | 'pricing' | 'school
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('landing');
   const [user, setUser] = useState<UserProfile | null>(null);
+
   const [isDemo, setIsDemo] = useState(false); // Flag to protect demo sessions from Firebase clearing them
   const [authChecking, setAuthChecking] = useState(true);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -50,6 +65,10 @@ const App: React.FC = () => {
   const [lessonPlan, setLessonPlan] = useState<LessonPlan | null>(null);
   const [savedLessons, setSavedLessons] = useState<LessonPlan[]>([]);
   
+
+  
+  // Data State
+
   const [registeredTeachers, setRegisteredTeachers] = useState<TeacherProfile[]>(() => {
     try {
       const saved = localStorage.getItem('mapleprep_teachers');
