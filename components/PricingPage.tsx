@@ -14,7 +14,6 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onGetStarted }) => {
   const [loadingPlanId, setLoadingPlanId] = useState<PlanId | null>(null);
 
   const handlePlanSelect = async (planId: PlanId) => {
-    // If the user is already logged in, try to go to payment immediately
     if (auth?.currentUser) {
         setLoadingPlanId(planId);
         try {
@@ -22,14 +21,12 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onGetStarted }) => {
             await createCheckoutSession(auth.currentUser.uid, planId, interval);
         } catch (error) {
             console.error("Stripe Checkout Error:", error);
-            // In demo/dev mode, we simulate a successful plan selection
-            // This tells App.tsx the user has "chosen" a plan for now
-            onGetStarted(planId); 
+            // We no longer fallback silently, the service will alert the error
         } finally {
             setLoadingPlanId(null);
         }
     } else {
-        // Not logged in, go to signup flow
+        localStorage.setItem("selectedPlan", planId);
         onGetStarted(planId);
     }
   };
@@ -45,7 +42,6 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onGetStarted }) => {
         'Unlimited Lesson Generation',
         'Full Access to Dashboard Tools',
         '50 AI Generated Images / mo',
-        'Worksheet & Quiz Generator',
         'Smart Board & Planner'
       ],
       color: 'bg-white',
@@ -123,11 +119,6 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onGetStarted }) => {
             key={plan.id}
             className={`rounded-[2.5rem] p-10 flex flex-col relative ${plan.color} ${plan.borderColor} border-2 ${plan.highlight ? 'shadow-2xl scale-105 z-10' : 'shadow-xl'}`}
           >
-            {plan.id === 'starter' && (
-               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 border-2 border-white">
-                 <Heart className="w-3 h-3 fill-current" /> Teacher's Favorite
-               </div>
-            )}
             {plan.highlight && (
                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-400 text-yellow-900 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 border-2 border-white">
                  <Crown className="w-3 h-3 fill-current" /> Recommended

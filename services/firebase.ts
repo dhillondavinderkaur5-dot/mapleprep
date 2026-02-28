@@ -1,25 +1,16 @@
 
-import { initializeApp, FirebaseApp } from 'firebase/app';
-import { getAuth, Auth } from 'firebase/auth';
-import { getFirestore, Firestore } from 'firebase/firestore';
-// Fix: Use wildcard import for storage to resolve "no exported member" errors in certain environments
 import * as storageModule from 'firebase/storage';
+import * as appModule from 'firebase/app';
+import * as authModule from 'firebase/auth';
+import * as firestoreModule from 'firebase/firestore';
 
-// Helper to get env vars safely
-const getEnv = (key: string) => {
-  // @ts-ignore
-  if (typeof import.meta !== 'undefined' && import.meta.env) {
-    // @ts-ignore
-    return import.meta.env[`VITE_${key}`] || import.meta.env[key];
-  }
-  return process.env[key] || process.env[`REACT_APP_${key}`];
-};
+const { initializeApp, getApps } = appModule as any;
+const { getAuth } = authModule as any;
+const { getFirestore } = firestoreModule as any;
 
 /**
- * --- DATABASE SETUP INSTRUCTIONS ---
- * 1. Open your Firebase Console.
- * 2. Copy your Web App configuration object.
- * 3. Replace the strings below with your actual values.
+ * FIREBASE CONFIGURATION (Provided by user)
+ * This ensures the app connects to the correct project immediately.
  */
 const firebaseConfig = {
   apiKey: "AIzaSyBhPfMhrmBDaC7_8ciBSHnBfHmTPOVx8iM",
@@ -29,30 +20,29 @@ const firebaseConfig = {
   messagingSenderId: "314044401442",
   appId: "1:314044401442:web:558f3a7a88617a0265077b",
   measurementId: "G-5QHG4THRD7"
-}
+};
 
-let app: FirebaseApp | undefined;
-let auth: Auth | undefined;
-let db: Firestore | undefined;
-// Fix: Using any for the storage variable to bypass named type export errors
-let storage: any | undefined;
+let app: any;
+let auth: any;
+let db: any;
+let storage: any;
 
-// Check if the user has provided real keys (not the default placeholders)
-const hasValidConfig = firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("AIzaSyCX3Z6");
-
-if (hasValidConfig) {
-  try {
+try {
+  // Check if an app is already initialized to prevent duplicate initialization errors
+  if (getApps().length === 0) {
     app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-    // Fix: Access getStorage via wildcard import to bypass named export resolution issues
-    storage = (storageModule as any).getStorage(app);
-    console.log("🔥 Firebase initialized successfully");
-  } catch (error) {
-    console.error("Firebase initialization failed:", error);
+    console.log("%c🔥 Firebase App Initialized", "color: #10b981; font-weight: bold;");
+  } else {
+    app = getApps()[0];
   }
+  
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = (storageModule as any).getStorage(app);
+  
+} catch (error) {
+  console.error("CRITICAL: Firebase failed to initialize with provided config:", error);
 }
 
-export { auth, db, storage };
-export const isFirebaseReady = !!db;
-export const configStatus = hasValidConfig ? 'connected' : 'local';
+export { auth, db, storage, firebaseConfig };
+export const isFirebaseReady = !!auth && !!db;

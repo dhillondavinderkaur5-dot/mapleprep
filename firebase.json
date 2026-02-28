@@ -1,29 +1,15 @@
 {
-  "functions": [
-    {
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "source": "functions"
-    },
-    {
-      "source": "mapleprep",
-      "codebase": "mapleprep",
-      "disallowLegacyRuntimeConfig": true,
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ]
-    }
-  ],
+  "functions": {
+    "source": "functions",
+    "codebase": "default",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "*.local"
+    ]
+  },
   "hosting": {
     "public": "dist",
     "ignore": [
@@ -32,6 +18,10 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/api/create-checkout-session",
+        "function": "createCheckoutSession"
+      },
       {
         "source": "**",
         "destination": "/index.html"

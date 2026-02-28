@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { GRADES, PROVINCES, SUBJECTS, SUBJECT_TEMPLATES } from '../constants';
 import { GenerationParams, GradeLevel, Province, Subject, PresentationTheme, LessonStructure } from '../types';
@@ -12,48 +11,24 @@ interface PresentationFormProps {
 }
 
 export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, onCancel, isLoading }) => {
-=======
-
-import React, { useState } from 'react';
-import { GRADES, PROVINCES, SUBJECTS, SUBJECT_TEMPLATES } from '../constants';
-import { GenerationParams, GradeLevel, Province, Subject } from '../types';
-import { Button } from './Button';
-import { BookOpen, MapPin, GraduationCap, Sparkles, LayoutTemplate, School, ChevronDown, ChevronUp, Layers } from 'lucide-react';
-
-interface PresentationFormProps {
-  onSubmit: (params: GenerationParams) => void;
-  isLoading: boolean;
-}
-
-export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, isLoading }) => {
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
   const [topic, setTopic] = useState('');
   const [grade, setGrade] = useState<GradeLevel>(GradeLevel.G3);
   const [province, setProvince] = useState<Province>(Province.ON);
   const [subject, setSubject] = useState<Subject>(Subject.Math);
   const [slideCount, setSlideCount] = useState<number>(8);
-<<<<<<< HEAD
   const [theme, setTheme] = useState<PresentationTheme>('classic');
   const [structure, setStructure] = useState<LessonStructure>('standard');
-=======
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
   const [isContextOpen, setIsContextOpen] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     if (topic.trim() && !isLoading) {
       onSubmit({ topic, grade, province, subject, slideCount, theme, structure });
-=======
-    if (topic.trim()) {
-      onSubmit({ topic, grade, province, subject, slideCount });
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
     }
   };
 
   const templates = SUBJECT_TEMPLATES[subject] || [];
 
-<<<<<<< HEAD
   const themes: { id: PresentationTheme; name: string; description: string; icon: React.ReactNode; color: string }[] = [
     { id: 'classic', name: 'Classic Maple', description: 'Clean, professional.', icon: <LayoutTemplate className="w-5 h-5"/>, color: 'bg-white border-slate-200' },
     { id: 'chalkboard', name: 'Chalkboard', description: 'Dark mode style.', icon: <Monitor className="w-5 h-5"/>, color: 'bg-slate-800 text-white border-slate-700' },
@@ -79,10 +54,6 @@ export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, is
         </button>
       )}
 
-=======
-  return (
-    <div className="max-w-4xl mx-auto">
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
         <div className="bg-gradient-to-r from-red-600 to-red-700 p-8 text-white">
           <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
@@ -113,10 +84,6 @@ export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, is
               Tip: You can type things like "Grade 5 fractions quiz" or "Social Studies map activity"
             </p>
 
-<<<<<<< HEAD
-=======
-            {/* Template Selector based on Subject */}
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
             {templates.length > 0 && (
               <div className="pt-2">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
@@ -144,7 +111,6 @@ export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, is
             )}
           </div>
 
-<<<<<<< HEAD
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-slate-100 pt-6">
              <div>
                 <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wide flex items-center gap-2 mb-4">
@@ -201,8 +167,6 @@ export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, is
              </div>
           </div>
 
-=======
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
           <div className="border-t border-slate-100 pt-6">
              <div 
                className="flex items-center justify-between mb-4 cursor-pointer group" 
@@ -286,8 +250,4 @@ export const PresentationForm: React.FC<PresentationFormProps> = ({ onSubmit, is
       </div>
     </div>
   );
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> c69ff7959d130581df48d7160275444f9cabdc03
